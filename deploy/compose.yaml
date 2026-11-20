@@ -1,0 +1,44 @@
+# DevFest MCP server for a Linux VM.
+#
+#   docker compose -f deploy/compose.yaml up -d --build                    # behind your own proxy
+#   DOMAIN=mcp.example.com docker compose -f deploy/compose.yaml \
+#       --profile https up -d --build                                       # with bundled Caddy (HTTPS)
+#
+# deploy/install.sh wraps both cases.
+services:
+  devfest-mcp:
+    build:
+      context: ..
+      dockerfile: workshop/05-bonus-home/Dockerfile
+    image: devfest-mcp:latest
+    container_name: devfest-mcp
+    restart: unless-stopped
+    # Only reachable from the VM itself; HTTPS is terminated by a reverse proxy on 443.
+    ports:
+      - "127.0.0.1:${MCP_PORT:-8080}:8080"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+
+  # Optional: automatic HTTPS (Let's Encrypt) when the VM has no reverse proxy yet.
+  # Needs DOMAIN pointing (DNS A/AAAA) to this VM and ports 80/443 free and open.
+  caddy:
+    profiles: ["https"]
+    image: caddy:2
+    container_name: devfest-caddy
+    restart: unless-stopped
+    depends_on: [devfest-mcp]
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}   # install.sh --domain sets the public hostname
+    command: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

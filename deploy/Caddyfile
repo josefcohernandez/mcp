@@ -1,0 +1,7 @@
+{$DOMAIN} {
+	encode gzip
+	# Streamable HTTP: flush responses immediately (SSE / long requests).
+	reverse_proxy devfest-mcp:8080 {
+		flush_interval -1
+	}
+}

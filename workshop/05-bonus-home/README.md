@@ -1,5 +1,26 @@
 # Step 05 — Bonus (at home)
 
+> **Implemented in this folder.** It starts from Step 03 and adds bonuses A–D:
+>
+> | Bonus | Where | What |
+> |---|---|---|
+> | A. Resource | `extras.go` | `devfest://schedule` (full JSON) + template `devfest://sessions/{id}` |
+> | B. Prompt | `extras.go` | `plan-my-day` (`day` required, `interests` optional) |
+> | C. Annotations | `main.go` | every tool: `readOnlyHint`, `idempotentHint`, `openWorldHint=false` |
+> | D. Container | `Dockerfile` | static binary on `distroless/static`, non-root, ~18 MB |
+>
+> ```bash
+> cd workshop/05-bonus-home
+> go test -race ./...     # 9 end-to-end tests over Streamable HTTP
+> go run . -http=:8080
+> ```
+>
+> Notes against SDK v1.8.0:
+> - `ReadResourceResult.Contents` is `[]*mcp.ResourceContents` (with `Text`/`Blob`); there is no
+>   `TextResourceContents` type, so the sketch in `solutions/05-bonus-home` does not compile as is.
+> - Build the container with `CGO_ENABLED=0`: otherwise the binary links against glibc and
+>   `distroless/static` fails with `exec ...: no such file or directory`.
+
 Continue after DevFest. Pick any of these — ordered from easiest to harder.
 
 ## A. Add a resource
@@ -18,13 +39,13 @@ Mark tools with `ReadOnlyHint` so Hosts can treat them as safe.
 
 ## D. Deploy HTTP somewhere
 
-Containerize Step 03 (`Dockerfile` sketch below) and deploy to Cloud Run / Fly.io / a VM. Point Cursor at the HTTPS `/mcp` URL.
+Containerize Step 03 (`Dockerfile` sketch below; the tested version is [`Dockerfile`](Dockerfile), build it from the repo root with `docker build -f workshop/05-bonus-home/Dockerfile -t devfest-mcp .`) and deploy to Cloud Run / Fly.io / a VM. Point Cursor at the HTTPS `/mcp` URL.
 
 ```dockerfile
 FROM golang:1.25 AS build
 WORKDIR /src
 COPY . .
-RUN go build -o /out/devfest-mcp ./solutions/03-http-transport
+RUN CGO_ENABLED=0 go build -o /out/devfest-mcp ./solutions/03-http-transport
 
 FROM gcr.io/distroless/static
 COPY --from=build /out/devfest-mcp /devfest-mcp
