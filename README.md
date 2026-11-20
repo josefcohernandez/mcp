@@ -11,6 +11,19 @@
 
 > We intentionally keep this workshop small. You will **not** replicate kubernetes-mcp-server architecture (toolsets, RBAC, OAuth, OpenTelemetry, etc.). You will learn the same methodology and core APIs: create a server, register tools, run over stdio, then expose Streamable HTTP and connect a client.
 
+## Status of this copy
+
+All steps are implemented and tested here (CI: `.github/workflows/ci.yml`):
+
+| Folder | State |
+|---|---|
+| `workshop/01-hello-stdio` … `03-http-transport` | Solved; Step 03 has end-to-end tests over Streamable HTTP |
+| `workshop/04-connect-cursor` | Cursor and Claude Code configuration |
+| `workshop/05-bonus-home` | Bonuses A–D: resources, `plan-my-day` prompt, read-only annotations, Dockerfile |
+| `demo-example` | Live-agenda server from the talk, with offline end-to-end tests |
+
+List tools return `{count, sessions}` instead of a bare array, so go-sdk v1.8 does not send the same data twice to the model.
+
 ## Agenda (~75 minutes)
 
 | Time | Block | What you do |

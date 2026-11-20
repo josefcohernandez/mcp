@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  go:
+    name: ${{ matrix.module }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - workshop/01-hello-stdio
+          - workshop/02-tools-schemas
+          - workshop/03-http-transport
+          - workshop/05-bonus-home
+          - demo-example
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ matrix.module }}/go.mod
+          cache-dependency-path: ${{ matrix.module }}/go.sum
+      - name: gofmt
+        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+      - run: go vet ./...
+      - run: go test -race -count=1 ./...
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Step 05 image
+        run: docker build -f workshop/05-bonus-home/Dockerfile -t devfest-mcp .
+      - name: Smoke test /health and /mcp
+        run: |
+          docker run -d --name devfest -p 8080:8080 devfest-mcp
+          for i in $(seq 1 20); do curl -fs http://127.0.0.1:8080/health && break; sleep 1; done
+          curl -fs -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
+            http://127.0.0.1:8080/mcp \
+            -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"ci","version":"0"}}}' \
+            | grep -q '"devfest-mcp"'
+          docker rm -f devfest
