@@ -79,3 +79,23 @@ Then configure Claude Desktop with that binary path (no `-http`).
 ## Done when
 
 The model answers using **live tool results** from your local schedule JSON — not from training data alone.
+
+## Claude Code (Streamable HTTP)
+
+With the Step 03 server running on `:8080`:
+
+```bash
+claude mcp add --transport http devfest-mcp http://127.0.0.1:8080/mcp
+claude mcp list          # should show devfest-mcp as connected
+```
+
+Or copy [`claude-code.mcp.json.example`](claude-code.mcp.json.example) to `.mcp.json` at the project root (project scope; note `"type": "http"`).
+Inside Claude Code, `/mcp` shows the server and its three tools.
+
+## Automated check (no AI client needed)
+
+`workshop/03-http-transport/main_test.go` connects the official Go SDK **client** to the server over Streamable HTTP — the same handshake a Host performs — and calls every tool:
+
+```bash
+cd workshop/03-http-transport && go test -v ./...
+```

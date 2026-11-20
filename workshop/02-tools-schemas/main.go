@@ -25,18 +25,13 @@ func main() {
 		Version: "0.2.0",
 	}, nil)
 
-	// TODO: register the three tools (handlers are in tools.go)
-	// mcp.AddTool(server, &mcp.Tool{Name: "list_sessions", Description: "List DevFest sessions, optionally filtered by day (Friday/Saturday)"}, makeListSessions(schedule))
-	// mcp.AddTool(server, &mcp.Tool{Name: "get_session", Description: "Get a single session by id (e.g. s1)"}, makeGetSession(schedule))
-	// mcp.AddTool(server, &mcp.Tool{Name: "find_speaker", Description: "Find sessions by speaker name (substring match)"}, makeFindSpeaker(schedule))
+	// Register the three tools. The input schema of each one is inferred from its
+	// input struct (ListSessionsInput, GetSessionInput, FindSpeakerInput) in tools.go.
+	mcp.AddTool(server, &mcp.Tool{Name: "list_sessions", Description: "List DevFest sessions, optionally filtered by day (Friday/Saturday)"}, makeListSessions(schedule))
+	mcp.AddTool(server, &mcp.Tool{Name: "get_session", Description: "Get a single session by id (e.g. s1)"}, makeGetSession(schedule))
+	mcp.AddTool(server, &mcp.Tool{Name: "find_speaker", Description: "Find sessions by speaker name (substring match)"}, makeFindSpeaker(schedule))
 
-	_ = schedule
-	_ = server
-	_ = context.Background
-
-	log.Fatal("TODO: register tools in main.go, implement handlers in tools.go, then run over stdio")
-
-	// if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
-	// 	log.Fatal(err)
-	// }
+	if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
+		log.Fatal(err)
+	}
 }

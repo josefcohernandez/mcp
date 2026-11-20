@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -21,6 +20,22 @@ type FindSpeakerInput struct {
 	Name string `json:"name" jsonschema:"speaker name or substring, e.g. Alberto"`
 }
 
+// SessionList wraps list results in a JSON object. MCP's structuredContent is meant to be
+// an object; when a handler returns a bare array the Go SDK (v1.8) appends a second,
+// compact copy of the JSON as an extra TextContent fallback, so the model would read
+// every list twice. Wrapping avoids that duplication and gives the model a count.
+type SessionList struct {
+	Count    int       `json:"count"`
+	Sessions []Session `json:"sessions"`
+}
+
+func sessionList(sessions []Session) SessionList {
+	if sessions == nil {
+		sessions = []Session{} // encode as [] rather than null when nothing matches
+	}
+	return SessionList{Count: len(sessions), Sessions: sessions}
+}
+
 func textResult(v any) (*mcp.CallToolResult, any, error) {
 	b, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
@@ -33,27 +48,25 @@ func textResult(v any) (*mcp.CallToolResult, any, error) {
 
 func makeListSessions(schedule *Schedule) func(context.Context, *mcp.CallToolRequest, ListSessionsInput) (*mcp.CallToolResult, any, error) {
 	return func(_ context.Context, _ *mcp.CallToolRequest, in ListSessionsInput) (*mcp.CallToolResult, any, error) {
-		// TODO: return schedule.Filter(in.Day, in.Track) via textResult
-		_ = in
-		_ = schedule
-		return nil, nil, fmt.Errorf("TODO: implement list_sessions")
+		return textResult(sessionList(schedule.Filter(in.Day, in.Track)))
 	}
 }
 
 func makeGetSession(schedule *Schedule) func(context.Context, *mcp.CallToolRequest, GetSessionInput) (*mcp.CallToolResult, any, error) {
 	return func(_ context.Context, _ *mcp.CallToolRequest, in GetSessionInput) (*mcp.CallToolResult, any, error) {
-		// TODO: schedule.ByID(in.ID) then textResult
-		_ = in
-		_ = schedule
-		return nil, nil, fmt.Errorf("TODO: implement get_session")
+		sess, err := schedule.ByID(in.ID)
+		if err != nil {
+			return &mcp.CallToolResult{
+				Content: []mcp.Content{&mcp.TextContent{Text: err.Error()}},
+				IsError: true,
+			}, nil, nil
+		}
+		return textResult(sess)
 	}
 }
 
 func makeFindSpeaker(schedule *Schedule) func(context.Context, *mcp.CallToolRequest, FindSpeakerInput) (*mcp.CallToolResult, any, error) {
 	return func(_ context.Context, _ *mcp.CallToolRequest, in FindSpeakerInput) (*mcp.CallToolResult, any, error) {
-		// TODO: schedule.BySpeaker(in.Name) then textResult
-		_ = in
-		_ = schedule
-		return nil, nil, fmt.Errorf("TODO: implement find_speaker")
+		return textResult(sessionList(schedule.BySpeaker(in.Name)))
 	}
 }
