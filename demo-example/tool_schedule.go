@@ -29,10 +29,18 @@ type ScheduleToolResult struct {
 }
 
 func registerScheduleTool(server *mcp.Server, cfg runtimeConfig) {
+	openWorld := true
 	mcp.AddTool(server, &mcp.Tool{
 		Name: "schedule",
 		Description: "Fetch the live DevFest Valencia agenda and filter sessions. " +
 			"Optional filters: day, time, person (speaker), description (matched against title and description).",
+		// Read-only and idempotent, but open-world: every call reaches the live GDG API.
+		Annotations: &mcp.ToolAnnotations{
+			Title:          "DevFest schedule (live)",
+			ReadOnlyHint:   true,
+			IdempotentHint: true,
+			OpenWorldHint:  &openWorld,
+		},
 	}, makeScheduleHandler(cfg))
 }
 

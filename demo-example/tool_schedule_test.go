@@ -84,6 +84,14 @@ func TestScheduleToolEndToEnd(t *testing.T) {
 		_, _ = w.Write(fakeAgenda(t))
 	})
 
+	tools, err := cs.ListTools(context.Background(), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a := tools.Tools[0].Annotations; a == nil || !a.ReadOnlyHint || a.OpenWorldHint == nil || !*a.OpenWorldHint {
+		t.Errorf("schedule should be annotated read-only and open-world, got %+v", a)
+	}
+
 	_, all := callSchedule(t, cs, map[string]any{})
 	if gotPath != "/api/event_slim/"+defaultSlug+"/" {
 		t.Errorf("unexpected upstream path %q", gotPath)
