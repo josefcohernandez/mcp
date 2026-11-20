@@ -16,6 +16,5 @@ coverage.*
 mcp.json
 
 # Published step by step during the workshop (keep local copies)
-demo-example/
 solutions/*
 !solutions/.gitkeep
