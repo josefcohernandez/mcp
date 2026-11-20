@@ -46,31 +46,33 @@ func main() {
 		addr = ":" + p
 	}
 
-	// TODO: create Streamable HTTP handler and mount /mcp + /health
-	//
-	// mcpHandler := mcp.NewStreamableHTTPHandler(
-	// 	func(_ *http.Request) *mcp.Server { return server },
-	// 	&mcp.StreamableHTTPOptions{Stateless: true, JSONResponse: true},
-	// )
-	// started := time.Now()
-	// mux := http.NewServeMux()
-	// mux.Handle("/mcp", mcpHandler)
-	// mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-	// 	if r.Method != http.MethodGet {
-	// 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-	// 		return
-	// 	}
-	// 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	// 	_ = json.NewEncoder(w).Encode(map[string]any{
-	// 		"status": "ok", "service": "devfest-mcp",
-	// 		"uptime_s": int64(time.Since(started).Seconds()),
-	// 	})
-	// })
-	// log.Printf("MCP Streamable HTTP: http://127.0.0.1%s/mcp", addr)
-	// log.Fatal(http.ListenAndServe(addr, mux))
+	// Streamable HTTP: a single endpoint (/mcp) that accepts POST (JSON-RPC messages),
+	// GET (optional server->client SSE stream) and DELETE (end session).
+	// Stateless: no Mcp-Session-Id is kept between requests (fine for pure, read-only tools).
+	// JSONResponse: reply with application/json instead of an SSE stream.
+	mcpHandler := mcp.NewStreamableHTTPHandler(
+		func(_ *http.Request) *mcp.Server { return server },
+		&mcp.StreamableHTTPOptions{Stateless: true, JSONResponse: true},
+	)
 
-	_, _, _, _ = addr, json.Marshal, time.Now, http.ListenAndServe
-	log.Fatal("TODO: wire Streamable HTTP on /mcp and /health — see README.md")
+	started := time.Now()
+	mux := http.NewServeMux()
+	mux.Handle("/mcp", mcpHandler)
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"status":   "ok",
+			"service":  "devfest-mcp",
+			"uptime_s": int64(time.Since(started).Seconds()),
+		})
+	})
+
+	log.Printf("MCP Streamable HTTP: http://127.0.0.1%s/mcp", addr)
+	log.Fatal(http.ListenAndServe(addr, mux))
 }
 
 func registerTools(server *mcp.Server, schedule *Schedule) {
