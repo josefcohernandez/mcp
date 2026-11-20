@@ -1,0 +1,21 @@
+bin/
+dist/
+*.exe
+*.test
+*.out
+.DS_Store
+.idea/
+.vscode/
+*.iml
+.cursor/
+vendor/
+coverage.*
+*.coverprofile
+.go-work*
+.mcp.json
+mcp.json
+
+# Published step by step during the workshop (keep local copies)
+demo-example/
+solutions/*
+!solutions/.gitkeep

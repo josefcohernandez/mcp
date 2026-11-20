@@ -1,0 +1,154 @@
+{
+  "event": "DevFest Valencia 2026",
+  "location": "La Harinera, 116 Carrer de Joan Verdeguer, València",
+  "source": "https://gdg.community.dev/events/details/google-gdg-valencia-presents-devfest-valencia-2026-1/",
+  "timezone": "CET",
+  "sessions": [
+    {
+      "id": "s1",
+      "day": "Friday",
+      "day_local": "Viernes",
+      "time": "4:00 PM",
+      "title": "Acceso al evento",
+      "speaker": "",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s2",
+      "day": "Friday",
+      "day_local": "Viernes",
+      "time": "16:45",
+      "title": "¡Bienvenidxs al primer día del DevFest Valencia 2026!",
+      "speaker": "",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s3",
+      "day": "Friday",
+      "day_local": "Viernes",
+      "time": "16:55",
+      "title": "El Patrón del Orquestador de IA: Enseña a tus agentes tu flujo de trabajo",
+      "speaker": "Eury Pérez Beltre",
+      "description": "Hay una respuesta que cualquier agente de IA daría y que parece correcta. En uno de mis proyectos rompe el build sin avisar, y descubrir por qué me costó hora y media. Una sesión nueva habría caído en la misma trampa, porque un agente no recuerda lo que aprendió contigo ayer. Por eso terminas explicando una y otra vez tu workflow, tus convenciones y las lecciones que ya pagaste.\n\nEn Caribium.ai, la empresa AI-native que cofundé, esa trampa no se repitió. Trabajo con una idea, compound engineering: cada tarea deja el proceso mejor y hace más fáciles las siguientes. La llevo a la práctica con dos patrones. El patrón orquestador define tu workflow una vez, y cualquier sesión nueva arranca conociéndolo. El que llamo **self-healing AI artifacts** hace que cada tarea lo mejore. Funcionan con cualquier herramienta de IA y aunque tu trabajo no sea programar. Los recorreremos con un ejemplo práctico, incluidos los puntos donde fallan.\"",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s4",
+      "day": "Friday",
+      "day_local": "Viernes",
+      "time": "17:30",
+      "title": "Chef Gemini: Tu pinche de cocina en tiempo real con Flutter y Live AI",
+      "speaker": "Jaime Blasco",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s5",
+      "day": "Friday",
+      "day_local": "Viernes",
+      "time": "18:05",
+      "title": "Taller Práctico: Construye tu primer servidor MCP paso a paso",
+      "speaker": "Alberto Gutiérrez",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s6",
+      "day": "Friday",
+      "day_local": "Viernes",
+      "time": "18:55",
+      "title": "Orquestrando la autonomía: Frameworks prácticos para la ingeniería de software basada en agentes",
+      "speaker": "Alejandro de la Cruz",
+      "description": "La mayoría de los desarrolladores siguen atascados en un cuello de botella con la IA al escribir prompts, revisar y pegar fragmentos de código de forma manual. La próxima frontera en la velocidad de desarrollo no es un mejor autocompletado, sino la arquitectura basada en agentes (agentic architecture): sistemas capaces de planificar, ejecutar, depurar e iterar en tareas complejas de forma autónoma.\n\nEn esta charla, mostraré cómo pasar de una interacción pasiva con la IA a la construcción de flujos de trabajo basados en agentes (agentic workflows) sólidos que se encarguen de los procesos de ingeniería repetitivos. Más allá de la simple \"ingeniería de prompts\", exploraremos los patrones de diseño necesarios para orquestar agentes autónomos de manera eficaz, incluyendo bucles de reflexión (reflection loops), el uso de herramientas (tool use) y la colaboración entre múltiples agentes (multi-agent collaboration).",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s7",
+      "day": "Friday",
+      "day_local": "Viernes",
+      "time": "19:30",
+      "title": "NETWORKING + DRINKS",
+      "speaker": "",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s8",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "9:00 AM",
+      "title": "Acceso al evento",
+      "speaker": "",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s9",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "9:45",
+      "title": "¡Bienvenidxs al segundo día del DevFest Valencia 2026!",
+      "speaker": "",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s10",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "10:00",
+      "title": "De Junior a Tech Lead: cómo diseñar una carrera profesional para equipos de tecnología",
+      "speaker": "Javier Gallego",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s11",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "10:35",
+      "title": "One-Person Unicorn: The New Era of Entrepreneurship in the Age of AI",
+      "speaker": "Adi Mazor",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s12",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "11:25",
+      "title": "No-code \u0026 Low-Code App Creation \u0026 Payment Eco-system",
+      "speaker": "Namrata More",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s13",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "12:00",
+      "title": "Coffee Break",
+      "speaker": "",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s14",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "12:30 PM",
+      "title": "De AI Coding a AI Engineering: Agentes que despliegan y prueban su propio código",
+      "speaker": "Diego Parra",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s15",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "13:05",
+      "title": "Análisis de sentimiento de marca con IA por menos de 20€ al mes",
+      "speaker": "Lucía Sánchez",
+      "audience_type": "IN_PERSON"
+    },
+    {
+      "id": "s16",
+      "day": "Saturday",
+      "day_local": "Sábado",
+      "time": "13:40",
+      "title": "Don't pay a model to run adb - Hunting Android performance issues with AI agents",
+      "speaker": "Andrei Grishanov",
+      "audience_type": "IN_PERSON"
+    }
+  ]
+}
