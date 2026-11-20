@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -33,27 +32,25 @@ func textResult(v any) (*mcp.CallToolResult, any, error) {
 
 func makeListSessions(schedule *Schedule) func(context.Context, *mcp.CallToolRequest, ListSessionsInput) (*mcp.CallToolResult, any, error) {
 	return func(_ context.Context, _ *mcp.CallToolRequest, in ListSessionsInput) (*mcp.CallToolResult, any, error) {
-		// TODO: return schedule.Filter(in.Day, in.Track) via textResult
-		_ = in
-		_ = schedule
-		return nil, nil, fmt.Errorf("TODO: implement list_sessions")
+		return textResult(schedule.Filter(in.Day, in.Track))
 	}
 }
 
 func makeGetSession(schedule *Schedule) func(context.Context, *mcp.CallToolRequest, GetSessionInput) (*mcp.CallToolResult, any, error) {
 	return func(_ context.Context, _ *mcp.CallToolRequest, in GetSessionInput) (*mcp.CallToolResult, any, error) {
-		// TODO: schedule.ByID(in.ID) then textResult
-		_ = in
-		_ = schedule
-		return nil, nil, fmt.Errorf("TODO: implement get_session")
+		sess, err := schedule.ByID(in.ID)
+		if err != nil {
+			return &mcp.CallToolResult{
+				Content: []mcp.Content{&mcp.TextContent{Text: err.Error()}},
+				IsError: true,
+			}, nil, nil
+		}
+		return textResult(sess)
 	}
 }
 
 func makeFindSpeaker(schedule *Schedule) func(context.Context, *mcp.CallToolRequest, FindSpeakerInput) (*mcp.CallToolResult, any, error) {
 	return func(_ context.Context, _ *mcp.CallToolRequest, in FindSpeakerInput) (*mcp.CallToolResult, any, error) {
-		// TODO: schedule.BySpeaker(in.Name) then textResult
-		_ = in
-		_ = schedule
-		return nil, nil, fmt.Errorf("TODO: implement find_speaker")
+		return textResult(schedule.BySpeaker(in.Name))
 	}
 }
